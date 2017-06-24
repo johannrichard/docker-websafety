@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
             libapache2-mod-wsgi \
             python-ldap	\
             sudo \
-            python-reportlab \
             python-openssl \
             krb5-user \
             sqlite && \
@@ -28,6 +27,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends python-pip && \
     pip install --upgrade pip && \
     pip install django==1.8.17 && \
     pip install pytz && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev python-dev && \
+    pip install setuptools && \
+    pip install reportlab==3.4.0 && \
     apt-get remove -y --auto-remove python-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
