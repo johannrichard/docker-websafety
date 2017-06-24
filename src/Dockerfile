@@ -76,7 +76,6 @@ RUN chown -R websafety:websafety /opt/websafety && \
     chmod +x /usr/local/bin/firstrun.sh && \
     chmod +x /etc/cron.daily/websafety_update && \
     chmod u+s /opt/websafety/bin/* && \
-    chmod 755 /opt/websafety/bin/certmgr && \
     chmod +x /etc/service/squid/run \
 		/etc/service/wsmgr/run \
 		/etc/service/wsicap/run \
