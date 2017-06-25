@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-/opt/websafety/bin/certmgr -action="regenerate-certificate-storage"
 if ! [[ -z "$TIME_ZONE" ]]; then
     sed -i "s:TIME_ZONE = '.*':TIME_ZONE='$TIME_ZONE':" /opt/websafety/var/console/console/settings.py
 fi
