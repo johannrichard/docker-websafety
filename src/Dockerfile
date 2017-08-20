@@ -6,9 +6,9 @@ FROM phusion/baseimage:0.9.19
 MAINTAINER support@diladele.com
 
 # set configuration variables
+# Diladele Version is set further below, to optimize the build process
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
-ENV DDWS_VER 5.1.0.2D17 
 
 # install python libs and apache with modwsgi
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
@@ -39,6 +39,9 @@ RUN echo "deb http://ubuntu16.diladele.com/ubuntu/ xenial main" > /etc/apt/sourc
             squidclient && \
     rm -rf /var/run/squid.pid && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set Websafety Version to download
+ENV DDWS_VER 5.1.0.2D17 
 
 # get latest web safety and install it
 RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu16/websafety-${DDWS_VER}_amd64.deb -o websafety-${DDWS_VER}_amd64.deb  && \
