@@ -55,7 +55,7 @@ RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu
 RUN touch /etc/crontab
 
 # make runit service directories
-RUN mkdir /etc/service/squid /etc/service/apache2 /etc/service/wsicap /etc/service/wsmgr
+RUN mkdir /etc/service/squid /etc/service/apache2 /etc/service/wsicap /etc/service/wsmgr /opt/websafety/bin/certmgr
 
 # copy required files
 COPY contents/squid.conf /etc/squid/squid.conf
