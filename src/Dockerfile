@@ -8,7 +8,6 @@ MAINTAINER support@diladele.com
 # set configuration variables
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
-ENV DDWS_VER 5.1.0.493A 
 
 # install python libs and apache with modwsgi
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
@@ -44,7 +43,9 @@ RUN echo "deb http://ubuntu16.diladele.com/ubuntu/ xenial main" > /etc/apt/sourc
     rm -rf /var/run/squid.pid && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# get latest web safety and install it
+# Get latest web safety and install it
+# Update the DDWS_VER if needed
+ENV DDWS_VER 5.1.0.493A 
 RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu16/websafety-${DDWS_VER}_amd64.deb -o websafety-${DDWS_VER}_amd64.deb  && \
 	dpkg --install websafety-${DDWS_VER}_amd64.deb && \
 	rm -f websafety-${DDWS_VER}_amd64.deb && \
