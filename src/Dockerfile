@@ -18,7 +18,8 @@ RUN apt-get install -y --no-install-recommends apache2 \
             sudo \
             python-openssl \
             krb5-user \
-            sqlite && \
+            sqlite \ 
+	    wget && \
     a2dissite 000-default && \
     wget http://packages.diladele.com/diladele_pub.asc -o diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
