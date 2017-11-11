@@ -87,7 +87,7 @@ RUN chown -R websafety:websafety /opt/websafety && \
 		/etc/service/apache2/run
 
 # expose ports
-EXPOSE 80 3126 3127 3128
+EXPOSE 80 3126 3127 3128 18889 18999
 
 # assign volumes
 VOLUME ["/opt/websafety/etc"]
