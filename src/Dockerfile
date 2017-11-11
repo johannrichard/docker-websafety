@@ -45,7 +45,7 @@ RUN echo "deb http://ubuntu16.diladele.com/ubuntu/ xenial main" > /etc/apt/sourc
 
 # Get latest web safety and install it
 # Update the DDWS_VER if needed
-ENV DDWS_VER 6.0.0.726F
+ENV DDWS_VER 5.2.0.210A
 RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu16/websafety-${DDWS_VER}_amd64.deb -o websafety-${DDWS_VER}_amd64.deb  && \
 	dpkg --install websafety-${DDWS_VER}_amd64.deb && \
 	rm -f websafety-${DDWS_VER}_amd64.deb && \
