@@ -20,7 +20,7 @@ RUN apt-get install -y --no-install-recommends apache2 \
             krb5-user \
             sqlite && \
     a2dissite 000-default && \
-    curl http://packages.diladele.com/diladele_pub.asc -o diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
+    wget http://packages.diladele.com/diladele_pub.asc -o diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends python-pip && \
@@ -49,7 +49,7 @@ RUN echo "deb http://ubuntu16.diladele.com/ubuntu/ xenial main" > /etc/apt/sourc
 ENV DDWS_VER 5.2.0.210A
 ENV ARCH armhf
 
-RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu16/websafety-${DDWS_VER}_$ARCH.deb -o websafety-${DDWS_VER}_$ARCH.deb  && \
+RUN wget http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu16/websafety-${DDWS_VER}_$ARCH.deb -O websafety-${DDWS_VER}_$ARCH.deb  && \
 	dpkg --install websafety-${DDWS_VER}_$ARCH.deb && \
 	rm -f websafety-${DDWS_VER}_$ARCH.deb && \
 	a2ensite websafety && \
