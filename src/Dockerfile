@@ -35,6 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends python-pip && \
     
 RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev python-dev && \
     pip install setuptools && \
+    pip install Pillow && \
     pip install reportlab==3.4.0 && \
     apt-get remove -y --auto-remove python-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
