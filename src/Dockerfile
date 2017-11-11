@@ -9,9 +9,10 @@ MAINTAINER support@diladele.com
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
+# install apt-utils (not part of the base image)
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 # install python libs and apache with modwsgi
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
-            apache2 \
+RUN apt-get install -y --no-install-recommends apache2 \
             libapache2-mod-wsgi \
             python-ldap	\
             sudo \
