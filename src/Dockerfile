@@ -63,6 +63,7 @@ COPY contents/squid.conf /etc/squid/squid.conf
 COPY contents/websafety_update /etc/cron.daily
 COPY contents/wsicap /etc/service/wsicap/run
 COPY contents/wsmgr /etc/service/wsmgr/run
+COPY contents/wssyncd /etc/service/wssyncd/run
 COPY contents/squid /etc/service/squid/run
 COPY contents/apache2 /etc/service/apache2/run
 COPY contents/reload.sh /opt/websafety/bin/reload.sh
@@ -81,6 +82,7 @@ RUN chown -R websafety:websafety /opt/websafety && \
     chmod 755 /opt/websafety/bin/report && \
     chmod +x /etc/service/squid/run \
 		/etc/service/wsmgr/run \
+		/etc/service/wssyncd/run \
 		/etc/service/wsicap/run \
 		/etc/service/apache2/run
 
