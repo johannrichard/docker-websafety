@@ -9,7 +9,8 @@ MAINTAINER support@diladele.com
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-# install apt-utils (not part of the base image)
+# install apt-utils (not part of the base image) and enable source repository for Squid installation
+RUN echo "deb-src http://security.debian.org jessie/updates main" >> /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 # install python libs and apache with modwsgi
 RUN apt-get install -y --no-install-recommends apache2 \
@@ -38,15 +39,66 @@ RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zli
     apt-get remove -y --auto-remove python-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN echo "deb http://ubuntu16.diladele.com/ubuntu/ xenial main" > /etc/apt/sources.list.d/ubuntu16.diladele.com.list && \
-    apt-get update && apt-get install -y --no-install-recommends \
-            libecap3 \
-            squid-common \
-            squid \
-            squidclient && \
+# Install build tools and build squid
+# install build tools
+RUN apt-get -y install devscripts build-essential fakeroot debhelper dh-autoreconf cdbs
+
+# install build dependences for squid
+RUN apt-get -y build-dep squid
+
+# install additional packages for squid 3.5.23 (see http://squid-web-proxy-cache.1019090.n4.nabble.com/Build-errors-with-Squid-3-5-24-under-Debian-td4681637.html)
+RUN apt-get -y install libdbi-perl libssl1.0-dev
+
+# drop squid3 build folder
+RUN rm -R /tmp/build/squid3
+
+# we will be working in a subfolder make it
+RUN mkdir -p /tmp/build/squid3
+
+# copy the patch to the working folder
+COPY contents/rules.patch build/squid3/rules.patch
+
+# decend into working directory
+RUN pushd /tmp/build/squid3
+
+# get squid3 from debian stretch
+RUN wget http://http.debian.net/debian/pool/main/s/squid3/squid3_3.5.23-5.dsc
+RUN wget http://http.debian.net/debian/pool/main/s/squid3/squid3_3.5.23.orig.tar.gz
+RUN wget http://http.debian.net/debian/pool/main/s/squid3/squid3_3.5.23-5.debian.tar.xz
+
+# unpack the source package
+RUN dpkg-source -x squid3_3.5.23-5.dsc
+
+# modify configure options in debian/rules, add --enable-ssl --enable-ssl-crtd and --with-openssl
+RUN patch squid3-3.5.23/debian/rules < rules.patch
+
+# build the package
+RUN cd squid3-3.5.23 && dpkg-buildpackage -rfakeroot -b
+
+# and revert
+RUN popd
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+            libecap3 && \
     rm -rf /var/run/squid.pid && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# install some more required packages
+RUN apt-get -y install squid-langpack
+
+# decend into working directory
+RUN pushd /tmp/build/squid3
+
+# install squid packages
+RUN dpkg --install squid-common_3.5.23-5_all.deb
+RUN dpkg --install squid_3.5.23-5_${ARCH}.deb
+RUN dpkg --install squidclient_3.5.23-5_${ARCH}.deb
+
+# and revert
+RUN popd
+
+# put the squid on hold to prevent updating
+RUN apt-mark hold squid squid-common
 # Get latest web safety and install it
 # Update the DDWS_VER if needed
 ENV DDWS_VER 5.2.0.210A
