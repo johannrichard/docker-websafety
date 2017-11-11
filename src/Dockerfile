@@ -20,8 +20,10 @@ RUN apt-get install -y --no-install-recommends apache2 \
             krb5-user \
             sqlite \ 
 	    wget && \
-    a2dissite 000-default && \
-    wget  --no-check-certificate http://packages.diladele.com/diladele_pub.asc -o diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
+    a2dissite 000-default 
+    
+# installk GPG keys
+RUN wget http://packages.diladele.com/diladele_pub.asc -O diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends python-pip && \
