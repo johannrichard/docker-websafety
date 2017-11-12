@@ -55,7 +55,7 @@ RUN apt-get -y install libdbi-perl libssl1.0-dev
 WORKDIR /tmp/build/squid3
 
 # copy the patch to the working folder
-COPY contents/rules.patch /tmp/build/squid3/rules.patch
+COPY contents/rules.patch rules.patch
 
 # get squid3 from debian stretch
 RUN wget http://http.debian.net/debian/pool/main/s/squid3/squid3_3.5.23-5.dsc
@@ -66,7 +66,7 @@ RUN wget http://http.debian.net/debian/pool/main/s/squid3/squid3_3.5.23-5.debian
 RUN dpkg-source -x squid3_3.5.23-5.dsc
 
 # modify configure options in debian/rules, add --enable-ssl --enable-ssl-crtd and --with-openssl
-RUN patch squid3-3.5.23/debian/rules < rules.patch
+RUN patch -l --verbose squid3-3.5.23/debian/rules < rules.patch
 
 # build the package
 RUN cd squid3-3.5.23 && dpkg-buildpackage -rfakeroot -b
