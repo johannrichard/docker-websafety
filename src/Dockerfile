@@ -51,17 +51,11 @@ RUN apt-get -y build-dep squid
 # install additional packages for squid 3.5.23 (see http://squid-web-proxy-cache.1019090.n4.nabble.com/Build-errors-with-Squid-3-5-24-under-Debian-td4681637.html)
 RUN apt-get -y install libdbi-perl libssl1.0-dev
 
-# drop squid3 build folder
-RUN rm -f -R /tmp/build/squid3
-
-# we will be working in a subfolder make it
-RUN mkdir -p /tmp/build/squid3
-
 # copy the patch to the working folder
-COPY contents/rules.patch build/squid3/rules.patch
+COPY contents/rules.patch /tmp/build/squid3/rules.patch
 
-# decend into working directory
-RUN pushd /tmp/build/squid3
+# descend into working directory
+WORKDIR /tmp/build/squid3
 
 # get squid3 from debian stretch
 RUN wget http://http.debian.net/debian/pool/main/s/squid3/squid3_3.5.23-5.dsc
@@ -77,9 +71,6 @@ RUN patch squid3-3.5.23/debian/rules < rules.patch
 # build the package
 RUN cd squid3-3.5.23 && dpkg-buildpackage -rfakeroot -b
 
-# and revert
-RUN popd
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
             libecap3 && \
     rm -rf /var/run/squid.pid
@@ -87,16 +78,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # install some more required packages
 RUN apt-get -y install squid-langpack
 
-# decend into working directory
-RUN pushd /tmp/build/squid3
-
 # install squid packages
 RUN dpkg --install squid-common_3.5.23-5_all.deb
 RUN dpkg --install squid_3.5.23-5_${ARCH}.deb
 RUN dpkg --install squidclient_3.5.23-5_${ARCH}.deb
-
-# and revert
-RUN popd
 
 # put the squid on hold to prevent updating
 RUN apt-mark hold squid squid-common
