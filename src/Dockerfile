@@ -45,10 +45,11 @@ RUN echo "deb http://ubuntu16.diladele.com/ubuntu/ xenial main" > /etc/apt/sourc
 
 # Get latest web safety and install it
 # Update the DDWS_VER if needed
-ENV DDWS_VER 5.2.0.210A
-RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/amd64/release/ubuntu16/websafety-${DDWS_VER}_amd64.deb -o websafety-${DDWS_VER}_amd64.deb  && \
-	dpkg --install websafety-${DDWS_VER}_amd64.deb && \
-	rm -f websafety-${DDWS_VER}_amd64.deb && \
+ARG DDWS_VER=5.2.0.210A
+ARG ARCH=armhf
+RUN curl http://packages.diladele.com/websafety/${DDWS_VER}/${ARCH}/release/ubuntu16/websafety-${DDWS_VER}_${ARCH}.deb -o websafety-${DDWS_VER}_${ARCH}.deb  && \
+	dpkg --install websafety-${DDWS_VER}_${ARCH}.deb && \
+	rm -f websafety-${DDWS_VER}_${ARCH}.deb && \
 	a2ensite websafety && \
 	mkdir -p /var/log/websafety
 
