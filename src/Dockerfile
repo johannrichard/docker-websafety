@@ -2,7 +2,6 @@
 # Docker file for running Diladele Web Safety in one container
 # Use buster (testing) as base override rwith --build-arg DIST=<distribution>
 ARG DIST=buster
-
 FROM arm32v7/debian:$DIST
 
 MAINTAINER support@diladele.com
@@ -13,9 +12,10 @@ ENV TERM xterm
 ENV DEBIAN_DIST $DIST
 
 # install apt-utils (not part of the base image) and enable source repository for Squid installation
-RUN echo 'deb-src http://httpredir.debian.org/debian ${DEBIAN_DIST} main contrib non-free' >> /etc/apt/sources.list
-RUN echo 'deb-src http://httpredir.debian.org/debian/ ${DEBIAN_DIST}-updates main contrib non-free' >> /etc/apt/sources.list
-RUN echo 'deb-src http://security.debian.org/ ${DEBIAN_DIST}/updates main contrib non-free' >> /etc/apt/sources.list
+ARG DIST=buster
+RUN echo "deb-src http://httpredir.debian.org/debian $DIST main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb-src http://httpredir.debian.org/debian/ $DIST-updates main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb-src http://security.debian.org/ $DIST/updates main contrib non-free" >> /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 # install python libs and apache with modwsgi
 RUN apt-get install -y --no-install-recommends apache2 \
