@@ -45,11 +45,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zli
 # install build tools
 RUN apt-get -y install devscripts build-essential fakeroot debhelper dh-autoreconf cdbs
 
-RUN apt-get remove -y --auto-remove python-pip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install build tools and build squid
-
 # install build dependences for squid
 RUN apt-get -y build-dep squid
 
@@ -87,8 +82,7 @@ RUN popd
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
             libecap3 && \
-    rm -rf /var/run/squid.pid && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    rm -rf /var/run/squid.pid
 
 # install some more required packages
 RUN apt-get -y install squid-langpack
@@ -108,7 +102,7 @@ RUN popd
 RUN apt-mark hold squid squid-common
 
 # remove uneeded packages
-RUN apt-get remove --purge --auto-remove devscripts build-essential fakeroot debhelper dh-autoreconf cdbs && \
+RUN apt-get remove --purge --auto-remove devscripts build-essential fakeroot debhelper dh-autoreconf cdbs python-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*	
 
 # Get latest web safety and install it
