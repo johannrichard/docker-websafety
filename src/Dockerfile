@@ -1,7 +1,7 @@
 #
 # Docker file for running Diladele Web Safety in one container
 # Use buster (testing) as base override rwith --build-arg DIST=<distribution>
-ARG DIST buster
+ARG DIST=buster
 
 FROM arm32v7/debian:$DIST
 
