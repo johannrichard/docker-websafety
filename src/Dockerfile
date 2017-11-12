@@ -106,6 +106,11 @@ RUN popd
 
 # put the squid on hold to prevent updating
 RUN apt-mark hold squid squid-common
+
+# remove uneeded packages
+RUN apt-get remove --purge --auto-remove devscripts build-essential fakeroot debhelper dh-autoreconf cdbs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*	
+
 # Get latest web safety and install it
 # Update the DDWS_VER if needed
 ENV DDWS_VER 5.2.0.210A
