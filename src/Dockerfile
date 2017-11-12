@@ -52,7 +52,7 @@ RUN apt-get -y build-dep squid
 RUN apt-get -y install libdbi-perl libssl1.0-dev
 
 # drop squid3 build folder
-RUN rm -R /tmp/build/squid3
+RUN rm -f -R /tmp/build/squid3
 
 # we will be working in a subfolder make it
 RUN mkdir -p /tmp/build/squid3
