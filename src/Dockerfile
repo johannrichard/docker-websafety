@@ -34,6 +34,9 @@ RUN pip install --upgrade pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
     
 RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev python-dev
+
+# install build tools
+RUN apt-get -y install devscripts build-essential fakeroot debhelper dh-autoreconf cdbs
 RUN pip install setuptools && \
     pip install reportlab==3.4.0
 
@@ -41,8 +44,6 @@ RUN apt-get remove -y --auto-remove python-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install build tools and build squid
-# install build tools
-RUN apt-get -y install devscripts build-essential fakeroot debhelper dh-autoreconf cdbs
 
 # install build dependences for squid
 RUN apt-get -y build-dep squid
