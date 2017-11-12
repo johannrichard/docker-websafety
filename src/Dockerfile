@@ -27,15 +27,14 @@ RUN apt-get install -y --no-install-recommends apache2 \
 RUN wget http://packages.diladele.com/diladele_pub.asc -O diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y --no-install-recommends python-pip && \
-    pip install --upgrade pip && \
+RUN apt-get update && apt-get install -y --no-install-recommends python-pip python-pil
+RUN pip install --upgrade pip && \
     pip install django==1.8.17 && \
     pip install pytz && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
     
 RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zlib1g-dev python-dev
 RUN pip install setuptools && \
-    pip install Pillow && \
     pip install reportlab==3.4.0
 
 RUN apt-get remove -y --auto-remove python-pip && \
