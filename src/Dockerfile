@@ -1,7 +1,7 @@
 #
 # Docker file for running Diladele Web Safety in one container
-#
-FROM arm32v7/debian:jessie
+# Use buster (testing) as base
+FROM arm32v7/debian:buster
 
 MAINTAINER support@diladele.com
 
@@ -27,7 +27,8 @@ RUN apt-get install -y --no-install-recommends apache2 \
 RUN wget http://packages.diladele.com/diladele_pub.asc -O diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y --no-install-recommends python-pip python-pil
+# Install reportlab and pillow via updated binary packages
+RUN apt-get update && apt-get install -y --no-install-recommends python-pip python-pil python-reportlab
 RUN pip install --upgrade pip && \
     pip install django==1.8.17 && \
     pip install pytz && \
@@ -37,8 +38,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends libjpeg-dev zli
 
 # install build tools
 RUN apt-get -y install devscripts build-essential fakeroot debhelper dh-autoreconf cdbs
-RUN pip install setuptools && \
-    pip install reportlab==3.4.0
 
 RUN apt-get remove -y --auto-remove python-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
