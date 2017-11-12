@@ -29,6 +29,7 @@ RUN apt-get install -y --no-install-recommends apache2 \
     a2dissite 000-default 
     
 # installk GPG keys
+RUN apt-get install gnupg
 RUN wget http://packages.diladele.com/diladele_pub.asc -O diladele_pub.asc && apt-key add diladele_pub.asc && rm diladele_pub.asc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
