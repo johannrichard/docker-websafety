@@ -13,7 +13,7 @@ ENV TERM xterm
 
 # install apt-utils (not part of the base image) and enable source repository for Squid installation
 RUN echo "deb-src http://httpredir.debian.org/debian ${DIST} main contrib non-free" >> /etc/apt/sources.list
-RUN echo "deb-src http://httpredir.debian.org/debian/ ${DIST}-updates main contrib non-free >> /etc/apt/sources.list
+RUN echo "deb-src http://httpredir.debian.org/debian/ ${DIST}-updates main contrib non-free" >> /etc/apt/sources.list
 RUN echo "deb-src http://security.debian.org/ ${DIST}/updates main contrib non-free" >> /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils 
 # install python libs and apache with modwsgi
